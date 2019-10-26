@@ -42,12 +42,14 @@ namespace DictionaryGUI
             this.tabManage = new TabPage();
             this.wordsTable = new DataGridView();
             this.word = new DataGridViewTextBoxColumn();
+            this.type = new DataGridViewTextBoxColumn();
             this.mean = new DataGridViewTextBoxColumn();
-            this.pronounce = new DataGridViewButtonColumn();
             this.tabIm_Ex = new TabPage();
             this.boxExport = new GroupBox();
+            this.chkWord = new CheckBox();
             this.btnDeSelect = new Button();
             this.btnSelect = new Button();
+            this.btnExport = new Button();
             this.wordListPanel = new FlowLayoutPanel();
             this.boxImport = new GroupBox();
             this.txtPath = new TextBox();
@@ -192,8 +194,11 @@ namespace DictionaryGUI
             this.wordsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.wordsTable.Columns.AddRange(new DataGridViewColumn[] {
             this.word,
-            this.mean,
-            this.pronounce});
+            this.type,
+            this.mean});
+            this.wordsTable.Rows.Add("Hello", "thán từ", "xin chào");
+            this.wordsTable.MultiSelect = false;
+            this.wordsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.wordsTable.Location = new Point(37, 70);
             this.wordsTable.Name = "wordsTable";
             this.wordsTable.Size = new Size(774, 280);
@@ -205,17 +210,17 @@ namespace DictionaryGUI
             this.word.HeaderText = "Word";
             this.word.Name = "Word";
 
+            //
+            // Type
+            //
+            this.type.HeaderText = "Type";
+            this.type.Name = "Type";
+
             // 
             // Mean
             // 
             this.mean.HeaderText = "Mean";
             this.mean.Name = "Mean";
-
-            // 
-            // Pronounce
-            // 
-            this.pronounce.HeaderText = "Pronounce";
-            this.pronounce.Name = "Pronounce";
 
             // 
             // tabIm_Ex
@@ -249,7 +254,10 @@ namespace DictionaryGUI
             // 
             this.boxExport.Controls.Add(this.btnDeSelect);
             this.boxExport.Controls.Add(this.btnSelect);
+            this.wordListPanel.Controls.Add(this.chkWord);
+            this.wordListPanel.BorderStyle = BorderStyle.Fixed3D;
             this.boxExport.Controls.Add(this.wordListPanel);
+            this.boxExport.Controls.Add(this.btnExport);
             this.boxExport.Location = new Point(61, 132);
             this.boxExport.Name = "boxExport";
             this.boxExport.Size = new Size(682, 226);
@@ -279,6 +287,34 @@ namespace DictionaryGUI
             this.btnSelect.TabIndex = 9;
             this.btnSelect.Text = "Select all";
             this.btnSelect.UseVisualStyleBackColor = false;
+
+            // 
+            // chkWord
+            // 
+            this.chkWord.AutoSize = true;
+            this.chkWord.Checked = true;
+            this.chkWord.CheckState = System.Windows.Forms.CheckState.Checked;
+            this.chkWord.Location = new System.Drawing.Point(3, 3);
+            this.chkWord.Name = "chkWord";
+            this.chkWord.Size = new System.Drawing.Size(62, 21);
+            this.chkWord.TabIndex = 0;
+            this.chkWord.Text = "Hello";
+            this.chkWord.UseVisualStyleBackColor = true;
+
+            // 
+            // btnExport
+            // 
+            this.btnExport.BackColor = System.Drawing.Color.FromArgb(255, 106, 106);
+            this.btnExport.BackgroundImageLayout = ImageLayout.None;
+            this.btnExport.FlatStyle = FlatStyle.Popup;
+            this.btnExport.Font = new Font("Microsoft PhagsPa", 9F, System.Drawing.FontStyle.Bold);
+            this.btnExport.ForeColor = SystemColors.ControlText;
+            this.btnExport.Location = new Point(492, 99);
+            this.btnExport.Name = "btnExport";
+            this.btnExport.Size = new Size(115, 33);
+            this.btnExport.TabIndex = 11;
+            this.btnExport.Text = "Export";
+            this.btnExport.UseVisualStyleBackColor = false;
 
             // 
             // btnDeSelect
@@ -348,18 +384,18 @@ namespace DictionaryGUI
 
         #endregion
 
-        private string pathStr = "";
+        private string pathStr;
         private TabControl tabSeparator;
         private TabPage tabSearch, tabManage, tabIm_Ex;
-        private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect;
+        private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect, btnExport;
         private RichTextBox txtMeans;
         private ListBox recmWordsList;
         private TextBox txtSearch, txtPath;
         private DataGridView wordsTable;
-        private DataGridViewTextBoxColumn word, mean;
-        private DataGridViewButtonColumn pronounce;
+        private DataGridViewTextBoxColumn word, type, mean;
         private GroupBox boxImport, boxExport;
         private FlowLayoutPanel wordListPanel;
         private Label lbPath;
+        private CheckBox chkWord;
     }
 }
