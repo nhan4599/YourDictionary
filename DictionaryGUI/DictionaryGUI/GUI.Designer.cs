@@ -63,6 +63,14 @@ namespace DictionaryGUI
             this.boxImport.SuspendLayout();
             this.SuspendLayout();
 
+            // initialize resoource path
+            string[] temp = Application.StartupPath.Split('\\');
+            for (int i = 0; i < 4; i++)
+            {
+                pathStr += temp[i] + "\\";
+            }
+            pathStr += "Image\\";
+
             // 
             // tabSeparator
             // 
@@ -111,7 +119,7 @@ namespace DictionaryGUI
             // btnPronounce
             // 
             this.btnPronounce.Image = Image.FromFile(
-                @"D:\YourDictionary\DictionaryGUI\DictionaryGUI\Speaker.Jpg");
+                pathStr + "Speaker.jpg");
             this.btnPronounce.Location = new Point(280, 5);
             this.btnPronounce.Name = "btnPronounce";
             this.btnPronounce.Size = new Size(47, 37);
@@ -133,6 +141,9 @@ namespace DictionaryGUI
             // recmWordsList
             // 
             this.recmWordsList.Location = new Point(55, 108);
+            this.recmWordsList.Font = new Font("Arial", 10, FontStyle.Italic);
+            this.recmWordsList.Items.AddRange(new string[] { "Hello" });
+            this.recmWordsList.SelectedIndex = 0;
             this.recmWordsList.Name = "recmWordsList";
             this.recmWordsList.Size = new Size(308, 230);
             this.recmWordsList.TabIndex = 10;
@@ -320,6 +331,8 @@ namespace DictionaryGUI
             this.Controls.Add(this.tabSeparator);
             this.Name = "GUI";
             this.Text = "Your dictionary";
+            this.Icon = System.Drawing.Icon.ExtractAssociatedIcon(pathStr + "AppIcon.ico");
+            this.StartPosition = FormStartPosition.CenterScreen;
             this.tabSeparator.ResumeLayout(false);
             this.tabSearch.ResumeLayout(false);
             this.tabSearch.PerformLayout();
@@ -335,6 +348,7 @@ namespace DictionaryGUI
 
         #endregion
 
+        private string pathStr = "";
         private TabControl tabSeparator;
         private TabPage tabSearch, tabManage, tabIm_Ex;
         private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect;
