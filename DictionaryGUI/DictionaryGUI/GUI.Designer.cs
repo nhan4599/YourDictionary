@@ -42,11 +42,10 @@ namespace DictionaryGUI
             this.tabManage = new TabPage();
             this.wordsTable = new DataGridView();
             this.word = new DataGridViewTextBoxColumn();
-            this.type = new DataGridViewTextBoxColumn();
+            this.type = new DataGridViewComboBoxColumn();
             this.mean = new DataGridViewTextBoxColumn();
             this.tabIm_Ex = new TabPage();
             this.boxExport = new GroupBox();
-            this.chkWord = new CheckBox();
             this.btnDeSelect = new Button();
             this.btnSelect = new Button();
             this.btnExport = new Button();
@@ -65,46 +64,37 @@ namespace DictionaryGUI
             this.boxImport.SuspendLayout();
             this.SuspendLayout();
 
-            // initialize resoource path
-            string[] temp = Application.StartupPath.Split('\\');
-            for (int i = 0; i < 4; i++)
-            {
-                pathStr += temp[i] + "\\";
-            }
-            pathStr += "Image\\";
-
-            // 
+            //
             // tabSeparator
-            // 
+            //
             this.tabSeparator.Controls.Add(this.tabSearch);
             this.tabSeparator.Controls.Add(this.tabManage);
             this.tabSeparator.Controls.Add(this.tabIm_Ex);
-            this.tabSeparator.Location = new Point(1, 0);
+            this.tabSeparator.Location = new System.Drawing.Point(0, 0);
             this.tabSeparator.Name = "tabSeparator";
             this.tabSeparator.SelectedIndex = 0;
-            this.tabSeparator.Size = new Size(855, 418);
+            this.tabSeparator.Size = new System.Drawing.Size(860, 451);
             this.tabSeparator.TabIndex = 0;
 
-            // 
+            //
             // tabSearch
-            // 
-            this.tabSearch.BackColor = Color.MintCream;
+            //
+            this.tabSearch.BackColor = System.Drawing.Color.MintCream;
             this.tabSearch.Controls.Add(this.btnDel);
-            this.tabSearch.Controls.Add(this.btnPronounce);
             this.tabSearch.Controls.Add(this.txtMeans);
             this.tabSearch.Controls.Add(this.recmWordsList);
             this.tabSearch.Controls.Add(this.txtSearch);
             this.tabSearch.Controls.Add(this.btnFind);
-            this.tabSearch.Location = new Point(4, 25);
+            this.tabSearch.Location = new System.Drawing.Point(4, 25);
             this.tabSearch.Name = "tabSearch";
-            this.tabSearch.Padding = new Padding(3);
-            this.tabSearch.Size = new Size(847, 389);
+            this.tabSearch.Padding = new System.Windows.Forms.Padding(3);
+            this.tabSearch.Size = new System.Drawing.Size(847, 422);
             this.tabSearch.TabIndex = 0;
             this.tabSearch.Text = "Search";
 
-            // 
-            // btnDel;
-            // 
+            //
+            // btnDel
+            //
             this.btnDel.BackColor = Color.FromArgb(255, 106, 106);
             this.btnDel.BackgroundImageLayout = ImageLayout.None;
             this.btnDel.FlatStyle = FlatStyle.Popup;
@@ -117,20 +107,19 @@ namespace DictionaryGUI
             this.btnDel.Text = "Delete";
             this.btnDel.UseVisualStyleBackColor = false;
 
-            // 
+            //
             // btnPronounce
-            // 
-            this.btnPronounce.Image = Image.FromFile(
-                pathStr + "Speaker.jpg");
+            //
+            this.btnPronounce.Image = Properties.Resources.Speaker;
             this.btnPronounce.Location = new Point(280, 5);
             this.btnPronounce.Name = "btnPronounce";
             this.btnPronounce.Size = new Size(47, 37);
             this.btnPronounce.TabIndex = 12;
             this.btnPronounce.UseVisualStyleBackColor = true;
 
-            // 
+            //
             // txtMeans
-            // 
+            //
             this.txtMeans.Controls.Add(this.btnPronounce);
             this.txtMeans.Location = new Point(404, 108);
             this.txtMeans.Multiline = true;
@@ -139,29 +128,27 @@ namespace DictionaryGUI
             this.txtMeans.Size = new Size(335, 230);
             this.txtMeans.TabIndex = 11;
 
-            // 
+            //
             // recmWordsList
-            // 
+            //
             this.recmWordsList.Location = new Point(55, 108);
             this.recmWordsList.Font = new Font("Arial", 10, FontStyle.Italic);
-            this.recmWordsList.Items.AddRange(new string[] { "Hello" });
-            this.recmWordsList.SelectedIndex = 0;
             this.recmWordsList.Name = "recmWordsList";
             this.recmWordsList.Size = new Size(308, 230);
             this.recmWordsList.TabIndex = 10;
 
-            // 
+            //
             // txtSearch
-            // 
+            //
             this.txtSearch.Font = new Font("Microsoft Sans Serif", 10.8F, FontStyle.Bold);
             this.txtSearch.Location = new Point(55, 51);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new Size(482, 28);
             this.txtSearch.TabIndex = 9;
 
-            // 
+            //
             // btnFind
-            // 
+            //
             this.btnFind.BackColor = Color.FromArgb(255, 106, 106);
             this.btnFind.BackgroundImageLayout = ImageLayout.None;
             this.btnFind.FlatStyle = FlatStyle.Popup;
@@ -174,21 +161,21 @@ namespace DictionaryGUI
             this.btnFind.Text = "Find";
             this.btnFind.UseVisualStyleBackColor = false;
 
-            // 
+            //
             // tabMange
-            // 
-            this.tabManage.BackColor = Color.MintCream;
+            //
+            this.tabManage.BackColor = System.Drawing.Color.MintCream;
             this.tabManage.Controls.Add(this.wordsTable);
-            this.tabManage.Location = new Point(4, 25);
+            this.tabManage.Location = new System.Drawing.Point(4, 25);
             this.tabManage.Name = "tabManage";
-            this.tabManage.Padding = new Padding(3);
-            this.tabManage.Size = new Size(847, 389);
+            this.tabManage.Padding = new System.Windows.Forms.Padding(3);
+            this.tabManage.Size = new System.Drawing.Size(847, 422);
             this.tabManage.TabIndex = 1;
             this.tabManage.Text = "Manage";
 
-            // 
+            //
             // wordsTable
-            // 
+            //
             this.wordsTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.wordsTable.BackgroundColor = Color.Honeydew;
             this.wordsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -196,7 +183,6 @@ namespace DictionaryGUI
             this.word,
             this.type,
             this.mean});
-            this.wordsTable.Rows.Add("Hello", "thán từ", "xin chào");
             this.wordsTable.MultiSelect = false;
             this.wordsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.wordsTable.Location = new Point(37, 70);
@@ -204,9 +190,9 @@ namespace DictionaryGUI
             this.wordsTable.Size = new Size(774, 280);
             this.wordsTable.TabIndex = 0;
 
-            // 
+            //
             // Word
-            // 
+            //
             this.word.HeaderText = "Word";
             this.word.Name = "Word";
 
@@ -215,30 +201,32 @@ namespace DictionaryGUI
             //
             this.type.HeaderText = "Type";
             this.type.Name = "Type";
+            this.type.Items.AddRange("Thán từ", "Tính từ", "Động từ", "Danh từ", "Trạng từ");
 
-            // 
+
+            //
             // Mean
-            // 
+            //
             this.mean.HeaderText = "Mean";
             this.mean.Name = "Mean";
 
-            // 
+            //
             // tabIm_Ex
-            // 
-            this.tabIm_Ex.BackColor = Color.MintCream;
+            //
+            this.tabIm_Ex.BackColor = System.Drawing.Color.MintCream;
             this.tabIm_Ex.Controls.Add(this.boxExport);
             this.tabIm_Ex.Controls.Add(this.boxImport);
-            this.tabIm_Ex.Cursor = Cursors.Default;
-            this.tabIm_Ex.Location = new Point(4, 25);
-            this.tabIm_Ex.Name = "tabPage3";
-            this.tabIm_Ex.Padding = new Padding(3);
-            this.tabIm_Ex.Size = new Size(847, 389);
+            this.tabIm_Ex.Cursor = System.Windows.Forms.Cursors.Default;
+            this.tabIm_Ex.Location = new System.Drawing.Point(4, 25);
+            this.tabIm_Ex.Name = "tabIm_Ex";
+            this.tabIm_Ex.Padding = new System.Windows.Forms.Padding(3);
+            this.tabIm_Ex.Size = new System.Drawing.Size(847, 422);
             this.tabIm_Ex.TabIndex = 2;
             this.tabIm_Ex.Text = "Import / Export";
 
-            // 
+            //
             // boxImport
-            // 
+            //
             this.boxImport.Location = new Point(61, 42);
             this.boxImport.Name = "boxImport";
             this.boxImport.Size = new Size(682, 59);
@@ -249,12 +237,11 @@ namespace DictionaryGUI
             this.boxImport.TabStop = false;
             this.boxImport.Text = "Import";
 
-            // 
+            //
             // boxExport
-            // 
+            //
             this.boxExport.Controls.Add(this.btnDeSelect);
             this.boxExport.Controls.Add(this.btnSelect);
-            this.wordListPanel.Controls.Add(this.chkWord);
             this.wordListPanel.BorderStyle = BorderStyle.Fixed3D;
             this.boxExport.Controls.Add(this.wordListPanel);
             this.boxExport.Controls.Add(this.btnExport);
@@ -265,17 +252,17 @@ namespace DictionaryGUI
             this.boxExport.TabStop = false;
             this.boxExport.Text = "Export";
 
-            // 
+            //
             // wordsListPanel
-            // 
+            //
             this.wordListPanel.Location = new Point(42, 32);
             this.wordListPanel.Name = "wordListPanel";
             this.wordListPanel.Size = new Size(386, 171);
             this.wordListPanel.TabIndex = 0;
 
-            // 
+            //
             // btnSelect
-            // 
+            //
             this.btnSelect.BackColor = Color.FromArgb(255, 106, 106);
             this.btnSelect.BackgroundImageLayout = ImageLayout.None;
             this.btnSelect.FlatStyle = FlatStyle.Popup;
@@ -288,22 +275,9 @@ namespace DictionaryGUI
             this.btnSelect.Text = "Select all";
             this.btnSelect.UseVisualStyleBackColor = false;
 
-            // 
-            // chkWord
-            // 
-            this.chkWord.AutoSize = true;
-            this.chkWord.Checked = true;
-            this.chkWord.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.chkWord.Location = new System.Drawing.Point(3, 3);
-            this.chkWord.Name = "chkWord";
-            this.chkWord.Size = new System.Drawing.Size(62, 21);
-            this.chkWord.TabIndex = 0;
-            this.chkWord.Text = "Hello";
-            this.chkWord.UseVisualStyleBackColor = true;
-
-            // 
+            //
             // btnExport
-            // 
+            //
             this.btnExport.BackColor = System.Drawing.Color.FromArgb(255, 106, 106);
             this.btnExport.BackgroundImageLayout = ImageLayout.None;
             this.btnExport.FlatStyle = FlatStyle.Popup;
@@ -316,9 +290,9 @@ namespace DictionaryGUI
             this.btnExport.Text = "Export";
             this.btnExport.UseVisualStyleBackColor = false;
 
-            // 
+            //
             // btnDeSelect
-            // 
+            //
             this.btnDeSelect.BackColor = Color.FromArgb(255, 106, 106);
             this.btnDeSelect.BackgroundImageLayout = ImageLayout.None;
             this.btnDeSelect.FlatStyle = FlatStyle.Popup;
@@ -331,17 +305,17 @@ namespace DictionaryGUI
             this.btnDeSelect.Text = "Deselect all";
             this.btnDeSelect.UseVisualStyleBackColor = false;
 
-            // 
-            // textBox1
-            // 
+            //
+            // txtPath
+            //
             this.txtPath.Location = new Point(95, 21);
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new Size(467, 22);
             this.txtPath.TabIndex = 0;
 
-            // 
+            //
             // lbPath
-            // 
+            //
             this.lbPath.AutoSize = true;
             this.lbPath.Location = new Point(43, 24);
             this.lbPath.Name = "lbPath";
@@ -350,9 +324,9 @@ namespace DictionaryGUI
             this.lbPath.Text = "Path";
             this.lbPath.TextAlign = ContentAlignment.MiddleRight;
 
-            // 
+            //
             // btnDirect
-            // 
+            //
             this.btnDirect.Location = new Point(581, 19);
             this.btnDirect.Name = "btnDirect";
             this.btnDirect.Size = new Size(35, 23);
@@ -360,14 +334,14 @@ namespace DictionaryGUI
             this.btnDirect.Text = "...";
             this.btnDirect.UseVisualStyleBackColor = true;
 
-            // 
+            //
             // GUI
-            // 
-            this.ClientSize = new Size(858, 419);
+            //
+            this.ClientSize = new Size(858, 450);
             this.Controls.Add(this.tabSeparator);
             this.Name = "GUI";
             this.Text = "Your dictionary";
-            this.Icon = System.Drawing.Icon.ExtractAssociatedIcon(pathStr + "AppIcon.ico");
+            this.Icon = Properties.Resources.AppIcon;
             this.StartPosition = FormStartPosition.CenterScreen;
             this.tabSeparator.ResumeLayout(false);
             this.tabSearch.ResumeLayout(false);
@@ -383,8 +357,6 @@ namespace DictionaryGUI
         }
 
         #endregion
-
-        private string pathStr;
         private TabControl tabSeparator;
         private TabPage tabSearch, tabManage, tabIm_Ex;
         private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect, btnExport;
@@ -392,10 +364,10 @@ namespace DictionaryGUI
         private ListBox recmWordsList;
         private TextBox txtSearch, txtPath;
         private DataGridView wordsTable;
-        private DataGridViewTextBoxColumn word, type, mean;
+        private DataGridViewTextBoxColumn word, mean;
+        private DataGridViewComboBoxColumn type;
         private GroupBox boxImport, boxExport;
         private FlowLayoutPanel wordListPanel;
         private Label lbPath;
-        private CheckBox chkWord;
     }
 }
