@@ -1,5 +1,5 @@
-﻿using System.Windows.Forms;
-using System.Drawing;
+﻿using System.Drawing;
+using System.Windows.Forms;
 
 namespace DictionaryGUI
 {
@@ -33,18 +33,28 @@ namespace DictionaryGUI
         {
             this.tabSeparator = new TabControl();
             this.tabSearch = new TabPage();
+            this.tabManage = new TabPage();
+            this.tabIm_Ex = new TabPage();
+
+            // initialize controls for tab search
+            this.txtSearch = new TextBox();
             this.btnDel = new Button();
             this.btnPronounce = new Button();
             this.txtMeans = new RichTextBox();
             this.recmWordsList = new ListBox();
-            this.txtSearch = new TextBox();
             this.btnFind = new Button();
-            this.tabManage = new TabPage();
+
+            // initialize controls for tab manage
+            this.lbTitle = new Label();
+            this.lbHelp = new LinkLabel();
             this.wordsTable = new DataGridView();
             this.word = new DataGridViewTextBoxColumn();
             this.type = new DataGridViewComboBoxColumn();
             this.mean = new DataGridViewTextBoxColumn();
-            this.tabIm_Ex = new TabPage();
+            this.btnSave = new Button();
+            this.btnUndo = new Button();
+
+            // initialize controls for tab im_ex
             this.boxExport = new GroupBox();
             this.btnDeSelect = new Button();
             this.btnSelect = new Button();
@@ -54,6 +64,8 @@ namespace DictionaryGUI
             this.txtPath = new TextBox();
             this.lbPath = new Label();
             this.btnDirect = new Button();
+
+            // SuspendLayout
             this.tabSeparator.SuspendLayout();
             this.tabSearch.SuspendLayout();
             this.txtMeans.SuspendLayout();
@@ -89,7 +101,6 @@ namespace DictionaryGUI
             this.tabSearch.Name = "tabSearch";
             this.tabSearch.Padding = new System.Windows.Forms.Padding(3);
             this.tabSearch.Size = new System.Drawing.Size(847, 422);
-            this.tabSearch.TabIndex = 0;
             this.tabSearch.Text = "Search";
 
             //
@@ -144,7 +155,7 @@ namespace DictionaryGUI
             this.txtSearch.Location = new Point(55, 51);
             this.txtSearch.Name = "txtSearch";
             this.txtSearch.Size = new Size(482, 28);
-            this.txtSearch.TabIndex = 9;
+            this.txtSearch.TabIndex = 0;
 
             //
             // btnFind
@@ -166,6 +177,10 @@ namespace DictionaryGUI
             //
             this.tabManage.BackColor = System.Drawing.Color.MintCream;
             this.tabManage.Controls.Add(this.wordsTable);
+            this.tabManage.Controls.Add(this.lbTitle);
+            this.tabManage.Controls.Add(this.lbHelp);
+            this.tabManage.Controls.Add(this.btnSave);
+            this.tabManage.Controls.Add(this.btnUndo);
             this.tabManage.Location = new System.Drawing.Point(4, 25);
             this.tabManage.Name = "tabManage";
             this.tabManage.Padding = new System.Windows.Forms.Padding(3);
@@ -325,6 +340,49 @@ namespace DictionaryGUI
             this.lbPath.TextAlign = ContentAlignment.MiddleRight;
 
             //
+            // lbHelp
+            //
+            this.lbHelp.AutoSize = true;
+            this.lbHelp.Location = new System.Drawing.Point(673, 33);
+            this.lbHelp.Name = "lbHelp";
+            this.lbHelp.Size = new System.Drawing.Size(156, 17);
+            this.lbHelp.TabIndex = 4;
+            this.lbHelp.TabStop = true;
+            this.lbHelp.Text = "Help me to use this tool";
+
+            //
+            // btnUndo
+            //
+            this.btnUndo.Location = new System.Drawing.Point(517, 369);
+            this.btnUndo.Name = "btnUndo";
+            this.btnUndo.Size = new System.Drawing.Size(109, 26);
+            this.btnUndo.TabIndex = 3;
+            this.btnUndo.Text = "Undo";
+            this.btnUndo.UseVisualStyleBackColor = true;
+
+            //
+            // btnSave
+            //
+            this.btnSave.Location = new System.Drawing.Point(276, 369);
+            this.btnSave.Name = "btnSave";
+            this.btnSave.Size = new System.Drawing.Size(116, 26);
+            this.btnSave.TabIndex = 2;
+            this.btnSave.Text = "Save";
+            this.btnSave.UseVisualStyleBackColor = true;
+
+            //
+            // lbTitle
+            //
+            this.lbTitle.AutoSize = true;
+            this.lbTitle.Font = new System.Drawing.Font("Microsoft PhagsPa", 13.8F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lbTitle.ForeColor = System.Drawing.Color.Red;
+            this.lbTitle.Location = new System.Drawing.Point(247, 21);
+            this.lbTitle.Name = "lbTitle";
+            this.lbTitle.Size = new System.Drawing.Size(350, 32);
+            this.lbTitle.TabIndex = 1;
+            this.lbTitle.Text = "Dictionary Management Tool";
+
+            //
             // btnDirect
             //
             this.btnDirect.Location = new Point(581, 19);
@@ -337,7 +395,7 @@ namespace DictionaryGUI
             //
             // GUI
             //
-            this.ClientSize = new Size(858, 450);
+            this.ClientSize = new Size(858, 440);
             this.Controls.Add(this.tabSeparator);
             this.Name = "GUI";
             this.Text = "Your dictionary";
@@ -360,14 +418,16 @@ namespace DictionaryGUI
         private TabControl tabSeparator;
         private TabPage tabSearch, tabManage, tabIm_Ex;
         private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect, btnExport;
+        private Button btnSave, btnUndo;
+        private TextBox txtSearch, txtPath;
         private RichTextBox txtMeans;
         private ListBox recmWordsList;
-        private TextBox txtSearch, txtPath;
         private DataGridView wordsTable;
         private DataGridViewTextBoxColumn word, mean;
         private DataGridViewComboBoxColumn type;
         private GroupBox boxImport, boxExport;
         private FlowLayoutPanel wordListPanel;
-        private Label lbPath;
+        private Label lbPath, lbTitle;
+        private LinkLabel lbHelp;
     }
 }
