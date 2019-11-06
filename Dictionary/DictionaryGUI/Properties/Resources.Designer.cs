@@ -71,6 +71,15 @@ namespace DictionaryGUI.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data Source=(LocalDB)\MSSQLLocalDB;AttachDbFilename=D:\YourDictionary\Dictionary\DictionaryGUI\Data\DataDictionary.mdf;Integrated Security=True.
+        /// </summary>
+        internal static string connectionString {
+            get {
+                return ResourceManager.GetString("connectionString", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
         internal static System.Drawing.Bitmap Speaker {
