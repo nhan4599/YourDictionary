@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Windows.Forms;
-using System.Data.SqlClient;
+using DictionaryGUI.Data;
+using System.Linq;
+using System.Collections.Generic;
 
 namespace DictionaryGUI
 {
@@ -16,6 +18,52 @@ namespace DictionaryGUI
             SetHandCursor(boxExport);
             btnPronounce.Cursor = Cursors.Hand;
             this.txtSearch.Focus();
+            this.Load += GUI_Load;
+            this.txtSearch.TextChanged += TxtSearch_TextChanged;
+        }
+
+        private void TxtSearch_TextChanged(object sender, EventArgs e)
+        {
+            ShowrecommendWords(this.txtSearch.Text);
+        }
+
+        private void ShowrecommendWords(string text)
+        {
+            var dataSource = GetDistinctWordsList();
+            var data = dataSource.Where(item => item.ToLower().StartsWith(text.ToLower())).Select(item => item);
+            this.recmWordsList.DataSource = data.ToList();
+        }
+
+        private void GUI_Load(object sender, EventArgs e)
+        {
+            LoadWordsToHintList();
+            LoadWordsToManageList();
+        }
+
+        private void LoadWordsToManageList()
+        {
+            DictionaryEntities db = new DictionaryEntities();
+            var data = db.Words.ToList();
+            this.wordsTable.DataSource = data.Select(item => new
+            {
+                Word = item.word_o,
+                Type = item.Type.type_description,
+                Mean = item.word_m
+            }).ToList();
+            db.Dispose();
+        }
+
+        private void LoadWordsToHintList()
+        {
+            this.recmWordsList.DataSource = GetDistinctWordsList();
+        }
+
+        private List<string> GetDistinctWordsList()
+        {
+            DictionaryEntities db = new DictionaryEntities();
+            var data = db.Words.Select(item => item.word_o).Distinct().ToList<string>();
+            db.Dispose();
+            return data;
         }
 
         private void SetHandCursor(Control page)

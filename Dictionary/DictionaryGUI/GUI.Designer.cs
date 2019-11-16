@@ -48,10 +48,8 @@ namespace DictionaryGUI
             this.lbTitle = new Label();
             this.lbHelp = new LinkLabel();
             this.wordsTable = new DataGridView();
-            this.word = new DataGridViewTextBoxColumn();
-            this.type = new DataGridViewComboBoxColumn();
-            this.mean = new DataGridViewTextBoxColumn();
             this.btnSave = new Button();
+            this.btnAdd = new Button();
             this.btnUndo = new Button();
 
             // initialize controls for tab im_ex
@@ -169,6 +167,7 @@ namespace DictionaryGUI
             this.tabManage.Controls.Add(this.lbTitle);
             this.tabManage.Controls.Add(this.lbHelp);
             this.tabManage.Controls.Add(this.btnSave);
+            this.tabManage.Controls.Add(this.btnAdd);
             this.tabManage.Controls.Add(this.btnUndo);
             this.tabManage.Location = new System.Drawing.Point(4, 25);
             this.tabManage.Name = "tabManage";
@@ -182,33 +181,12 @@ namespace DictionaryGUI
             this.wordsTable.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             this.wordsTable.BackgroundColor = Color.Honeydew;
             this.wordsTable.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.wordsTable.Columns.AddRange(this.word, this.type, this.mean);
             this.wordsTable.MultiSelect = false;
             this.wordsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.wordsTable.Location = new Point(37, 70);
             this.wordsTable.Name = "wordsTable";
             this.wordsTable.Size = new Size(774, 280);
             this.wordsTable.TabIndex = 0;
-
-            //
-            // Word
-            //
-            this.word.HeaderText = "Word";
-            this.word.Name = "Word";
-
-            //
-            // Type
-            //
-            this.type.HeaderText = "Type";
-            this.type.Name = "Type";
-            this.type.Items.AddRange("Thán từ", "Tính từ", "Động từ", "Danh từ", "Trạng từ");
-
-
-            //
-            // Mean
-            //
-            this.mean.HeaderText = "Mean";
-            this.mean.Name = "Mean";
 
             //
             // tabIm_Ex
@@ -325,9 +303,9 @@ namespace DictionaryGUI
             // lbHelp
             //
             this.lbHelp.AutoSize = true;
-            this.lbHelp.Location = new System.Drawing.Point(673, 33);
+            this.lbHelp.Location = new Point(673, 33);
             this.lbHelp.Name = "lbHelp";
-            this.lbHelp.Size = new System.Drawing.Size(156, 17);
+            this.lbHelp.Size = new Size(156, 17);
             this.lbHelp.TabStop = true;
             this.lbHelp.Text = "Help me to use this tool";
 
@@ -336,9 +314,9 @@ namespace DictionaryGUI
             //
             this.btnUndo.BackColor = Color.FromArgb(255, 106, 106);
             this.btnUndo.FlatStyle = FlatStyle.Popup;
-            this.btnUndo.Location = new System.Drawing.Point(517, 369);
+            this.btnUndo.Location = new Point(540, 369);
             this.btnUndo.Name = "btnUndo";
-            this.btnUndo.Size = new System.Drawing.Size(109, 26);
+            this.btnUndo.Size = new Size(109, 26);
             this.btnUndo.Text = "Undo";
             this.btnUndo.UseVisualStyleBackColor = true;
 
@@ -347,21 +325,32 @@ namespace DictionaryGUI
             //
             this.btnSave.BackColor = Color.FromArgb(255, 106, 106);
             this.btnSave.FlatStyle = FlatStyle.Popup;
-            this.btnSave.Location = new System.Drawing.Point(276, 369);
+            this.btnSave.Location = new Point(340, 369);
             this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new System.Drawing.Size(116, 26);
+            this.btnSave.Size = new Size(116, 26);
             this.btnSave.Text = "Save";
             this.btnSave.UseVisualStyleBackColor = true;
+
+            //
+            // btnAdd
+            //
+            this.btnAdd.BackColor = Color.FromArgb(255, 106, 106);
+            this.btnAdd.FlatStyle = FlatStyle.Popup;
+            this.btnAdd.Location = new Point(150, 369);
+            this.btnAdd.Name = "btnSave";
+            this.btnAdd.Size = new Size(116, 26);
+            this.btnAdd.Text = "Add";
+            this.btnAdd.UseVisualStyleBackColor = true;
 
             //
             // lbTitle
             //
             this.lbTitle.AutoSize = true;
-            this.lbTitle.Font = new System.Drawing.Font("Microsoft PhagsPa", 13.8F, System.Drawing.FontStyle.Bold);
-            this.lbTitle.ForeColor = System.Drawing.Color.Red;
-            this.lbTitle.Location = new System.Drawing.Point(247, 21);
+            this.lbTitle.Font = new Font("Microsoft PhagsPa", 13.8F, System.Drawing.FontStyle.Bold);
+            this.lbTitle.ForeColor = Color.Red;
+            this.lbTitle.Location = new Point(247, 21);
             this.lbTitle.Name = "lbTitle";
-            this.lbTitle.Size = new System.Drawing.Size(350, 32);
+            this.lbTitle.Size = new Size(350, 32);
             this.lbTitle.Text = "Dictionary Management Tool";
 
             //
@@ -403,13 +392,11 @@ namespace DictionaryGUI
         private TabControl tabSeparator;
         private TabPage tabSearch, tabManage, tabIm_Ex;
         private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect, btnExport;
-        private Button btnSave, btnUndo, btnImport;
+        private Button btnSave, btnAdd, btnUndo, btnImport;
         private TextBox txtSearch, txtPath;
         private RichTextBox txtMeans;
         private ListBox recmWordsList;
         private DataGridView wordsTable;
-        private DataGridViewTextBoxColumn word, mean;
-        private DataGridViewComboBoxColumn type;
         private GroupBox boxImport, boxExport;
         private FlowLayoutPanel wordListPanel;
         private Label lbPath, lbTitle;
