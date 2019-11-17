@@ -130,6 +130,7 @@ namespace DictionaryGUI
             this.txtMeans.Name = "txtMeans";
             this.txtMeans.ReadOnly = true;
             this.txtMeans.Size = new Size(335, 230);
+            this.txtMeans.Font = new Font("Microsoft Sans Serif", 9F, FontStyle.Bold);
 
             //
             // recmWordsList

@@ -20,18 +20,52 @@ namespace DictionaryGUI
             this.txtSearch.Focus();
             this.Load += GUI_Load;
             this.txtSearch.TextChanged += TxtSearch_TextChanged;
+            this.recmWordsList.MouseClick += RecmWordsList_MouseClick;
+            this.btnFind.Click += BtnFind_Click;
+            this.btnDel.Click += (sender, e) => this.txtSearch.Clear();
+        }
+
+        private void RecmWordsList_MouseClick(object sender, MouseEventArgs e)
+        {
+            this.txtSearch.TextChanged -= TxtSearch_TextChanged;
+            int index = this.recmWordsList.IndexFromPoint(e.Location);
+            this.txtSearch.Text = this.recmWordsList.Items[index].ToString();
+            this.txtSearch.TextChanged += TxtSearch_TextChanged;
+        }
+
+        private void BtnFind_Click(object sender, EventArgs e)
+        {
+            ShowInfWords(this.txtSearch.Text);
+        }
+
+        private void ShowInfWords(string text)
+        {
+            this.txtMeans.Clear();
+            var db = new DictionaryEntities();
+            var data = db.Words.Where(item => item.word_o.ToLower().Equals(text.ToLower())).GroupBy(item => item.type_id);
+            this.txtMeans.AppendText(text + Environment.NewLine);
+            foreach (var type in data)
+            {
+                this.txtMeans.AppendText("    - " + db.Types.Find(type.Key).type_description + Environment.NewLine);
+                foreach (var means in type)
+                {
+                    this.txtMeans.AppendText("        + " + means.word_m + Environment.NewLine);
+                }
+            }
+            db.Dispose();
         }
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
         {
-            ShowrecommendWords(this.txtSearch.Text);
+            ShowRecommendWords(this.txtSearch.Text);
         }
 
-        private void ShowrecommendWords(string text)
+        private void ShowRecommendWords(string text)
         {
             var dataSource = GetDistinctWordsList();
             var data = dataSource.Where(item => item.ToLower().StartsWith(text.ToLower())).Select(item => item);
             this.recmWordsList.DataSource = data.ToList();
+            this.recmWordsList.ClearSelected();
         }
 
         private void GUI_Load(object sender, EventArgs e)
@@ -56,6 +90,7 @@ namespace DictionaryGUI
         private void LoadWordsToHintList()
         {
             this.recmWordsList.DataSource = GetDistinctWordsList();
+            this.recmWordsList.ClearSelected();
         }
 
         private List<string> GetDistinctWordsList()
