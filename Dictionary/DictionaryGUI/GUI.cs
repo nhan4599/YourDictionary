@@ -23,7 +23,43 @@ namespace DictionaryGUI
             this.recmWordsList.MouseClick += RecmWordsList_MouseClick;
             this.btnFind.Click += BtnFind_Click;
             this.btnDel.Click += (sender, e) => this.txtSearch.Clear();
-            this.btnAdd.Click += (sender, e) => (new FrmEdit_Add()).ShowDialog();
+            this.btnAdd.Click += (sender, e) =>
+            {
+                (new FrmEdit_Add(true)).ShowDialog();
+                LoadWordsToManageList();
+            };
+            this.btnDelete.Click += BtnDelete_Click;
+            this.wordsTable.CellDoubleClick += WordsTable_CellDoubleClick;
+        }
+
+        private void BtnDelete_Click(object sender, EventArgs e)
+        {
+            var db = new DictionaryEntities();
+            var data = db.Words.Find(this.wordsTable.SelectedRows[0].Cells[0].Value.ToString(),
+                                        IndexOfType(this.wordsTable.SelectedRows[0].Cells[1].Value.ToString()) + 1);
+            db.Words.Remove(data);
+            db.SaveChanges();
+            db.Dispose();
+            LoadWordsToManageList();
+            MessageBox.Show("The selected row has been removed successfully");
+        }
+
+        private void WordsTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            string word = this.wordsTable.Rows[e.RowIndex].Cells[0].Value.ToString();
+            int type = IndexOfType(this.wordsTable.Rows[e.RowIndex].Cells[1].Value.ToString());
+            string mean = this.wordsTable.Rows[e.RowIndex].Cells[2].Value.ToString();
+            var editFrm = new FrmEdit_Add(false, word, type, mean);
+            editFrm.ShowDialog();
+            editFrm.Close();
+        }
+
+        public static int IndexOfType(string typeText)
+        {
+            var db = new DictionaryEntities();
+            int index = db.Types.Where(item => item.type_description.Equals(typeText)).Select(item => item.type_id).ToList()[0] - 1;
+            db.Dispose();
+            return index;
         }
 
         private void RecmWordsList_MouseClick(object sender, MouseEventArgs e)
