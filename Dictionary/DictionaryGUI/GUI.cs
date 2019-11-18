@@ -35,18 +35,25 @@ namespace DictionaryGUI
 
         private void BtnFind_Click(object sender, EventArgs e)
         {
-            ShowInfWords(this.txtSearch.Text);
+            ShowWordInfs(this.txtSearch.Text);
         }
 
-        private void ShowInfWords(string text)
+        private void ShowWordInfs(string word)
         {
             this.txtMeans.Clear();
             var db = new DictionaryEntities();
-            var data = db.Words.Where(item => item.word_o.ToLower().Equals(text.ToLower())).GroupBy(item => item.type_id);
-            this.txtMeans.AppendText(text + Environment.NewLine);
+            var data = db.Words.Where(item => item.word_o.ToLower().Equals(word.ToLower())).GroupBy(item => item.type_id);
+            this.txtMeans.AppendText(word + Environment.NewLine);
+            this.txtMeans.SelectionStart = 0;
+            this.txtMeans.SelectionLength = this.txtMeans.Lines[0].Length;
+            this.txtMeans.SelectionColor = System.Drawing.Color.Purple;
             foreach (var type in data)
             {
-                this.txtMeans.AppendText("    - " + db.Types.Find(type.Key).type_description + Environment.NewLine);
+                this.txtMeans.AppendText("    - " + db.Types.Find(type.Key).type_description);
+                this.txtMeans.SelectionStart = this.txtMeans.GetFirstCharIndexOfCurrentLine();
+                this.txtMeans.SelectionLength = this.txtMeans.Lines[this.txtMeans.GetLineFromCharIndex(this.txtMeans.SelectionStart)].Length;
+                this.txtMeans.SelectionColor = System.Drawing.Color.Blue;
+                this.txtMeans.AppendText(Environment.NewLine);
                 foreach (var means in type)
                 {
                     this.txtMeans.AppendText("        + " + means.word_m + Environment.NewLine);
