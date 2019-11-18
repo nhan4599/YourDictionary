@@ -23,6 +23,7 @@ namespace DictionaryGUI
             this.recmWordsList.MouseClick += RecmWordsList_MouseClick;
             this.btnFind.Click += BtnFind_Click;
             this.btnDel.Click += (sender, e) => this.txtSearch.Clear();
+            this.btnAdd.Click += (sender, e) => (new FrmEdit_Add()).ShowDialog();
         }
 
         private void RecmWordsList_MouseClick(object sender, MouseEventArgs e)

@@ -88,6 +88,12 @@
     <Compile Include="Data\Word.cs">
       <DependentUpon>DataModels.tt</DependentUpon>
     </Compile>
+    <Compile Include="FrmEdit_Add.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="FrmEdit_Add.Designer.cs">
+      <DependentUpon>FrmEdit_Add.cs</DependentUpon>
+    </Compile>
     <Compile Include="GUI.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -96,6 +102,9 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <EmbeddedResource Include="FrmEdit_Add.resx">
+      <DependentUpon>FrmEdit_Add.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="GUI.resx">
       <DependentUpon>GUI.cs</DependentUpon>
     </EmbeddedResource>
