@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DatabaseManagement.cs" />
     <Compile Include="Data\DataModels.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -102,6 +103,7 @@
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="WordsView.cs" />
     <EmbeddedResource Include="FrmEdit_Add.resx">
       <DependentUpon>FrmEdit_Add.cs</DependentUpon>
     </EmbeddedResource>

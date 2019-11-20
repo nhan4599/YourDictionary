@@ -1,16 +1,18 @@
 ﻿using System;
 using System.Windows.Forms;
-using DictionaryGUI.Data;
 using System.Linq;
-using System.Collections.Generic;
+using DictionaryGUI.Data;
+using System.Data;
 
 namespace DictionaryGUI
 {
     public partial class GUI : Form
     {
+        DatabaseManagement manager;
         public GUI()
         {
             InitializeComponent();
+            manager = new DatabaseManagement();
             SetHandCursor(tabSearch);
             SetHandCursor(tabManage);
             SetHandCursor(tabIm_Ex);
@@ -22,11 +24,18 @@ namespace DictionaryGUI
             this.txtSearch.TextChanged += TxtSearch_TextChanged;
             this.recmWordsList.MouseClick += RecmWordsList_MouseClick;
             this.btnFind.Click += BtnFind_Click;
-            this.btnDel.Click += (sender, e) => this.txtSearch.Clear();
+            this.btnClear.Click += (sender, e) => this.txtSearch.Clear();
             this.btnAdd.Click += (sender, e) =>
             {
-                (new FrmEdit_Add(true)).ShowDialog();
-                LoadWordsToManageList();
+                FrmEdit_Add frm = new FrmEdit_Add(true);
+                if (frm.ShowDialog() == DialogResult.Yes)
+                {
+                    Word obj;
+                    frm.PerformAction(out obj);
+                    wordsTable.Rows.Add(obj.word_o, obj.Type.type_description, obj.word_m);
+                    wordsTable.Sort(wordsTable.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
+                    MessageBox.Show("Add successfully");
+                }
             };
             this.btnDelete.Click += BtnDelete_Click;
             this.wordsTable.CellDoubleClick += WordsTable_CellDoubleClick;
@@ -34,39 +43,34 @@ namespace DictionaryGUI
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            var db = new DictionaryEntities();
-            var data = db.Words.Find(this.wordsTable.SelectedRows[0].Cells[0].Value.ToString(),
-                                        IndexOfType(this.wordsTable.SelectedRows[0].Cells[1].Value.ToString()) + 1);
-            db.Words.Remove(data);
-            db.SaveChanges();
-            db.Dispose();
-            LoadWordsToManageList();
-            MessageBox.Show("The selected row has been removed successfully");
+            string word = wordsTable.SelectedRows[0].Cells[0].Value.ToString();
+            string type = wordsTable.SelectedRows[0].Cells[1].Value.ToString();
+            int id = manager.GetIDOfType(type);
+            manager.RemoveWord(word, id);
+            wordsTable.Rows.RemoveAt(wordsTable.SelectedRows[0].Index);
+            MessageBox.Show("removed successfully");
         }
 
         private void WordsTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            string word = this.wordsTable.Rows[e.RowIndex].Cells[0].Value.ToString();
-            int type = IndexOfType(this.wordsTable.Rows[e.RowIndex].Cells[1].Value.ToString());
-            string mean = this.wordsTable.Rows[e.RowIndex].Cells[2].Value.ToString();
-            var editFrm = new FrmEdit_Add(false, word, type, mean);
-            editFrm.ShowDialog();
-            editFrm.Close();
-        }
+            string word = wordsTable.Rows[e.RowIndex].Cells[0].Value.ToString();
+            string type = wordsTable.Rows[e.RowIndex].Cells[1].Value.ToString();
+            string mean = wordsTable.Rows[e.RowIndex].Cells[2].Value.ToString();
 
-        public static int IndexOfType(string typeText)
-        {
-            var db = new DictionaryEntities();
-            int index = db.Types.Where(item => item.type_description.Equals(typeText)).Select(item => item.type_id).ToList()[0] - 1;
-            db.Dispose();
-            return index;
+            FrmEdit_Add frm = new FrmEdit_Add(false, word, manager.GetIDOfType(type), mean);
+            if (frm.ShowDialog() == DialogResult.Yes)
+            {
+                Word obj;
+                frm.PerformAction(out obj);
+                wordsTable.Rows[e.RowIndex].Cells[2].Value = obj.word_m;
+                MessageBox.Show("Edit successfully");
+            }
         }
 
         private void RecmWordsList_MouseClick(object sender, MouseEventArgs e)
         {
             this.txtSearch.TextChanged -= TxtSearch_TextChanged;
-            int index = this.recmWordsList.IndexFromPoint(e.Location);
-            this.txtSearch.Text = this.recmWordsList.Items[index].ToString();
+            this.txtSearch.Text = this.recmWordsList.Items[this.recmWordsList.IndexFromPoint(e.Location)].ToString();
             this.txtSearch.TextChanged += TxtSearch_TextChanged;
         }
 
@@ -78,15 +82,14 @@ namespace DictionaryGUI
         private void ShowWordInfs(string word)
         {
             this.txtMeans.Clear();
-            var db = new DictionaryEntities();
-            var data = db.Words.Where(item => item.word_o.ToLower().Equals(word.ToLower())).GroupBy(item => item.type_id);
             this.txtMeans.AppendText(word + Environment.NewLine);
             this.txtMeans.SelectionStart = 0;
             this.txtMeans.SelectionLength = this.txtMeans.Lines[0].Length;
             this.txtMeans.SelectionColor = System.Drawing.Color.Purple;
+            var data = manager.GetMeansOfWord(word);
             foreach (var type in data)
             {
-                this.txtMeans.AppendText("    - " + db.Types.Find(type.Key).type_description);
+                this.txtMeans.AppendText("    - " + manager.GetStringDescriptionOfTypeKey(type.Key));
                 this.txtMeans.SelectionStart = this.txtMeans.GetFirstCharIndexOfCurrentLine();
                 this.txtMeans.SelectionLength = this.txtMeans.Lines[this.txtMeans.GetLineFromCharIndex(this.txtMeans.SelectionStart)].Length;
                 this.txtMeans.SelectionColor = System.Drawing.Color.Blue;
@@ -96,7 +99,6 @@ namespace DictionaryGUI
                     this.txtMeans.AppendText("        + " + means.word_m + Environment.NewLine);
                 }
             }
-            db.Dispose();
         }
 
         private void TxtSearch_TextChanged(object sender, EventArgs e)
@@ -106,7 +108,7 @@ namespace DictionaryGUI
 
         private void ShowRecommendWords(string text)
         {
-            var dataSource = GetDistinctWordsList();
+            var dataSource = manager.GetDistinctWordsList();
             var data = dataSource.Where(item => item.ToLower().StartsWith(text.ToLower())).Select(item => item);
             this.recmWordsList.DataSource = data.ToList();
             this.recmWordsList.ClearSelected();
@@ -120,29 +122,17 @@ namespace DictionaryGUI
 
         private void LoadWordsToManageList()
         {
-            DictionaryEntities db = new DictionaryEntities();
-            var data = db.Words.ToList();
-            this.wordsTable.DataSource = data.Select(item => new
+            var data = manager.GetWordsData();
+            foreach (var item in data)
             {
-                Word = item.word_o,
-                Type = item.Type.type_description,
-                Mean = item.word_m
-            }).ToList();
-            db.Dispose();
+                wordsTable.Rows.Add(item.word, item.type, item.mean);
+            }
         }
 
         private void LoadWordsToHintList()
         {
-            this.recmWordsList.DataSource = GetDistinctWordsList();
+            this.recmWordsList.DataSource = manager.GetDistinctWordsList();
             this.recmWordsList.ClearSelected();
-        }
-
-        private List<string> GetDistinctWordsList()
-        {
-            DictionaryEntities db = new DictionaryEntities();
-            var data = db.Words.Select(item => item.word_o).Distinct().ToList<string>();
-            db.Dispose();
-            return data;
         }
 
         private void SetHandCursor(Control page)

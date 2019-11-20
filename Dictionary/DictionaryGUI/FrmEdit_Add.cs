@@ -1,6 +1,5 @@
 ﻿using System.Windows.Forms;
 using DictionaryGUI.Data;
-using System.Linq;
 
 namespace DictionaryGUI
 {
@@ -10,9 +9,12 @@ namespace DictionaryGUI
 
         private string[] key = new string[2];
 
+        private DatabaseManagement manager;
+
         public FrmEdit_Add(bool shouldAdd, string word = "", int type = -1, string mean = "")
         {
             InitializeComponent();
+            manager = new DatabaseManagement();
             this.shouldAdd = shouldAdd;
 
             this.Load += (sender, e) =>
@@ -27,42 +29,32 @@ namespace DictionaryGUI
                     key[0] = word;
                     key[1] = type.ToString();
                     this.txtWord.Text = word;
-                    this.cboType.SelectedIndex = type;
+                    this.txtWord.ReadOnly = true;
+                    this.cboType.SelectedIndex = type - 1;
+                    this.cboType.Enabled = false;
                     this.txtMean.Text = mean;
                     this.btnPerform.Text = "Save";
                 }
             };
-            this.btnPerform.Click += (sender, e) => PerformAction();
-            this.btnCancel.Click += (sender, e) => this.Dispose();
+            this.btnPerform.DialogResult = DialogResult.Yes;
+            this.btnCancel.Click += (sender, e) => this.Close();
         }
 
-        private void PerformAction()
+        public void PerformAction(out Word obj)
         {
-            var db = new DictionaryEntities();
-            if (this.shouldAdd)
+            if (shouldAdd)
             {
-                db.Words.Add(new Word { word_o = txtWord.Text,
-                                        type_id = cboType.SelectedIndex + 1,
-                                        word_m = txtMean.Text });
-                MessageBox.Show("Row added successfully");
-            }
-            else
+                obj = manager.AddWord(txtWord.Text, cboType.SelectedIndex + 1, txtMean.Text);
+            }else
             {
-                Word data = db.Words.Find(key[0], int.Parse(key[1]) + 1);
-                data.word_m = txtMean.Text;
-                MessageBox.Show("Data edited successfully");
+                obj = manager.EditWord(txtWord.Text, cboType.SelectedIndex + 1, txtMean.Text);
             }
-            db.SaveChanges();
-            db.Dispose();
             this.btnCancel.PerformClick();
         }
 
         private void LoadTypeList()
         {
-            DictionaryEntities db = new DictionaryEntities();
-            var data = db.Types.Select(item => item.type_description);
-            this.cboType.DataSource = data.ToList();
-            db.Dispose();
+            this.cboType.DataSource = manager.GetListTypes();
         }
     }
 }

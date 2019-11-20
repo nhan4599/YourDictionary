@@ -38,7 +38,7 @@ namespace DictionaryGUI
 
             // initialize controls for tab search
             this.txtSearch = new TextBox();
-            this.btnDel = new Button();
+            this.btnClear = new Button();
             this.btnPronounce = new Button();
             this.txtMeans = new RichTextBox();
             this.recmWordsList = new ListBox();
@@ -48,7 +48,6 @@ namespace DictionaryGUI
             this.lbTitle = new Label();
             this.lbHelp = new LinkLabel();
             this.wordsTable = new DataGridView();
-            this.btnSave = new Button();
             this.btnAdd = new Button();
             this.btnDelete = new Button();
 
@@ -89,7 +88,7 @@ namespace DictionaryGUI
             // tabSearch
             //
             this.tabSearch.BackColor = System.Drawing.Color.MintCream;
-            this.tabSearch.Controls.Add(this.btnDel);
+            this.tabSearch.Controls.Add(this.btnClear);
             this.tabSearch.Controls.Add(this.txtMeans);
             this.tabSearch.Controls.Add(this.recmWordsList);
             this.tabSearch.Controls.Add(this.txtSearch);
@@ -101,16 +100,16 @@ namespace DictionaryGUI
             this.tabSearch.Text = "Search";
 
             //
-            // btnDel
+            // btnClear
             //
-            this.btnDel.BackColor = Color.FromArgb(255, 106, 106);
-            this.btnDel.FlatStyle = FlatStyle.Popup;
-            this.btnDel.Font = new Font("Microsoft PhagsPa", 9F, FontStyle.Bold);
-            this.btnDel.Location = new Point(699, 50);
-            this.btnDel.Name = "button2";
-            this.btnDel.Size = new Size(93, 33);
-            this.btnDel.Text = "Delete";
-            this.btnDel.UseVisualStyleBackColor = false;
+            this.btnClear.BackColor = Color.FromArgb(255, 106, 106);
+            this.btnClear.FlatStyle = FlatStyle.Popup;
+            this.btnClear.Font = new Font("Microsoft PhagsPa", 9F, FontStyle.Bold);
+            this.btnClear.Location = new Point(699, 50);
+            this.btnClear.Name = "button2";
+            this.btnClear.Size = new Size(93, 33);
+            this.btnClear.Text = "Clear";
+            this.btnClear.UseVisualStyleBackColor = false;
 
             //
             // btnPronounce
@@ -167,7 +166,6 @@ namespace DictionaryGUI
             this.tabManage.Controls.Add(this.wordsTable);
             this.tabManage.Controls.Add(this.lbTitle);
             this.tabManage.Controls.Add(this.lbHelp);
-            this.tabManage.Controls.Add(this.btnSave);
             this.tabManage.Controls.Add(this.btnDelete);
             this.tabManage.Controls.Add(this.btnAdd);
             this.tabManage.Location = new System.Drawing.Point(4, 25);
@@ -185,6 +183,12 @@ namespace DictionaryGUI
             this.wordsTable.MultiSelect = false;
             this.wordsTable.SelectionMode = DataGridViewSelectionMode.FullRowSelect;
             this.wordsTable.Location = new Point(37, 70);
+            this.wordsTable.ReadOnly = true;
+            this.wordsTable.AllowUserToAddRows = false;
+            this.wordsTable.RowHeadersVisible = false;
+            this.wordsTable.Columns.Add("col1", "Word");
+            this.wordsTable.Columns.Add("col2", "Type");
+            this.wordsTable.Columns.Add("col3", "Mean");
             this.wordsTable.Name = "wordsTable";
             this.wordsTable.Size = new Size(774, 280);
             this.wordsTable.TabIndex = 0;
@@ -311,22 +315,11 @@ namespace DictionaryGUI
             this.lbHelp.Text = "Help me to use this tool";
 
             //
-            // btnSave
-            //
-            this.btnSave.BackColor = Color.FromArgb(255, 106, 106);
-            this.btnSave.FlatStyle = FlatStyle.Popup;
-            this.btnSave.Location = new Point(610, 369);
-            this.btnSave.Name = "btnSave";
-            this.btnSave.Size = new Size(116, 26);
-            this.btnSave.Text = "Save";
-            this.btnSave.UseVisualStyleBackColor = true;
-
-            //
             // btnDelete
             //
             this.btnDelete.BackColor = Color.FromArgb(255, 106, 106);
             this.btnDelete.FlatStyle = FlatStyle.Popup;
-            this.btnDelete.Location = new Point(410, 369);
+            this.btnDelete.Location = new Point(499, 369);
             this.btnDelete.Name = "btnSave";
             this.btnDelete.Size = new Size(116, 26);
             this.btnDelete.Text = "Delete";
@@ -337,7 +330,7 @@ namespace DictionaryGUI
             //
             this.btnAdd.BackColor = Color.FromArgb(255, 106, 106);
             this.btnAdd.FlatStyle = FlatStyle.Popup;
-            this.btnAdd.Location = new Point(200, 369);
+            this.btnAdd.Location = new Point(250, 369);
             this.btnAdd.Name = "btnSave";
             this.btnAdd.Size = new Size(116, 26);
             this.btnAdd.Text = "Add";
@@ -392,8 +385,8 @@ namespace DictionaryGUI
         #endregion
         private TabControl tabSeparator;
         private TabPage tabSearch, tabManage, tabIm_Ex;
-        private Button btnPronounce, btnFind, btnDel, btnSelect, btnDeSelect, btnDirect, btnExport, btnDelete;
-        private Button btnSave, btnAdd, btnImport;
+        private Button btnPronounce, btnFind, btnClear, btnSelect, btnDeSelect, btnDirect, btnExport, btnDelete;
+        private Button btnAdd, btnImport;
         private TextBox txtSearch, txtPath;
         private RichTextBox txtMeans;
         private ListBox recmWordsList;
