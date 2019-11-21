@@ -39,6 +39,19 @@ namespace DictionaryGUI
             };
             this.btnDelete.Click += BtnDelete_Click;
             this.wordsTable.CellDoubleClick += WordsTable_CellDoubleClick;
+            this.btnSelect.Click += (sender, e) => SelectAllCheckBox(true);
+            this.btnDeSelect.Click += (sender, e) => SelectAllCheckBox(false);
+        }
+
+        private void SelectAllCheckBox(bool @checked)
+        {
+            foreach (Control ctrl in wordListPanel.Controls)
+            {
+                if (ctrl is CheckBox)
+                {
+                    ((CheckBox)ctrl).Checked = @checked;
+                }
+            }
         }
 
         private void BtnDelete_Click(object sender, EventArgs e)
@@ -118,6 +131,16 @@ namespace DictionaryGUI
         {
             LoadWordsToHintList();
             LoadWordsToManageList();
+            LoadWordsToImExTab();
+        }
+
+        private void LoadWordsToImExTab()
+        {
+            var data = manager.GetDistinctWordsList();
+            foreach (string item in data)
+            {
+                this.wordListPanel.Controls.Add(new CheckBox() { Checked = false, Text = item, Cursor = Cursors.Hand });
+            }
         }
 
         private void LoadWordsToManageList()

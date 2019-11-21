@@ -238,7 +238,9 @@ namespace DictionaryGUI
             this.wordListPanel.Location = new Point(42, 32);
             this.wordListPanel.Name = "wordListPanel";
             this.wordListPanel.Size = new Size(386, 171);
-
+            this.wordListPanel.FlowDirection = FlowDirection.LeftToRight;
+            this.wordListPanel.AutoScroll = true;
+            
             //
             // btnSelect
             //
