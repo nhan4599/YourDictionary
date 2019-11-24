@@ -60,6 +60,11 @@ namespace DictionaryGUI
             return obj;
         }
 
+        public List<Word> GetWords(string word)
+        {
+            return db.Words.Where(item => item.word_o.ToLower().Equals(word)).ToList();
+        }
+
         public int GetIDOfType(string type)
         {
             return db.Types.Where(item => item.type_description.Equals(type)).FirstOrDefault().type_id;

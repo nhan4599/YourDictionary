@@ -3,6 +3,7 @@ using System.Windows.Forms;
 using System.Linq;
 using DictionaryGUI.Data;
 using System.Data;
+using System.Collections.Generic;
 
 namespace DictionaryGUI
 {
@@ -41,6 +42,38 @@ namespace DictionaryGUI
             this.wordsTable.CellDoubleClick += WordsTable_CellDoubleClick;
             this.btnSelect.Click += (sender, e) => SelectAllCheckBox(true);
             this.btnDeSelect.Click += (sender, e) => SelectAllCheckBox(false);
+            this.btnExport.Click += BtnExport_Click;
+        }
+
+        private void BtnExport_Click(object sender, EventArgs e)
+        {
+            if (frmOpen.ShowDialog() == DialogResult.OK)
+            {
+                string path = frmOpen.FileName;
+                ExcelManagement exl = new ExcelManagement();
+                List<Word> list = GetSelectedWordsList();
+                exl.CreateNewFile(path);
+                exl.WriteFile(list);
+                exl.Close();
+                MessageBox.Show("Completed to export selected data to " + path);
+            }
+        }
+
+        private List<Word> GetSelectedWordsList()
+        {
+            List<Word> list = new List<Word>();
+            foreach (CheckBox ctrl in wordListPanel.Controls)
+            {
+                if (ctrl.Checked)
+                {
+                    var temp = manager.GetWords(ctrl.Text);
+                    for (int i = 0; i < temp.Count; i++)
+                    {
+                        list.Add(temp[i]);
+                    }
+                }
+            }
+            return list;
         }
 
         private void SelectAllCheckBox(bool @checked)

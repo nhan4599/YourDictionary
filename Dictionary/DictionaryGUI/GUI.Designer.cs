@@ -62,6 +62,7 @@ namespace DictionaryGUI
             this.lbPath = new Label();
             this.btnDirect = new Button();
             this.btnImport = new Button();
+            this.frmOpen = new SaveFileDialog();
 
             // SuspendLayout
             this.tabSeparator.SuspendLayout();
@@ -361,6 +362,12 @@ namespace DictionaryGUI
             this.btnDirect.UseVisualStyleBackColor = true;
 
             //
+            // frmOpen
+            //
+            this.frmOpen.InitialDirectory = @"C:\";
+            this.frmOpen.Filter = "Excel 2003 and below (*.xls)|*.xls|Excel 2007 and greater than (*.xlsx)|*.xlsx";
+
+            //
             // GUI
             //
             this.FormBorderStyle = FormBorderStyle.FixedDialog;
@@ -397,5 +404,6 @@ namespace DictionaryGUI
         private FlowLayoutPanel wordListPanel;
         private Label lbPath, lbTitle;
         private LinkLabel lbHelp;
+        private SaveFileDialog frmOpen;
     }
 }
