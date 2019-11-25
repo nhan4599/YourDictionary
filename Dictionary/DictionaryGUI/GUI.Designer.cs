@@ -365,7 +365,7 @@ namespace DictionaryGUI
             // frmOpen
             //
             this.frmOpen.InitialDirectory = @"C:\";
-            this.frmOpen.Filter = "Excel 2003 and below (*.xls)|*.xls|Excel 2007 and greater than (*.xlsx)|*.xlsx";
+            this.frmOpen.Filter = "Excel 2003 and below (*.xls)|*.xls|Excel 2007 and greater than (*.xlsx)|*.xlsx|Comma separated values (*.csv)|*.csv";
 
             //
             // GUI

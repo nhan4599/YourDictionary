@@ -1,6 +1,7 @@
 ﻿using Excel = Microsoft.Office.Interop.Excel;
 using System.Collections.Generic;
 using DictionaryGUI.Data;
+using System.IO;
 
 namespace DictionaryGUI
 {
@@ -11,17 +12,18 @@ namespace DictionaryGUI
         Excel.Workbook xlsFile;
         Excel.Worksheet sheet;
 
-        public ExcelManagement(string path) : this()
+        public ExcelManagement(string path)
         {
             this.path = path;
-            xlsFile = xlsApp.Workbooks.Open(path);
-            sheet = xlsFile.Sheets[0];
-        }
-
-        public ExcelManagement()
-        {
-            this.path = string.Empty;
             xlsApp = new Excel.Application();
+            if (!File.Exists(path))
+            {
+                this.CreateNewFile(path);
+            }else
+            {
+                xlsFile = xlsApp.Workbooks.Open(path);
+            }
+            sheet = xlsFile.Sheets[1];
         }
 
         public void WriteFile(List<Word> t)
@@ -35,11 +37,21 @@ namespace DictionaryGUI
             }
         }
 
+        public void Save()
+        {
+            xlsFile.Save();
+        }
+
+        public void SaveAs(string path)
+        {
+            xlsFile.SaveAs(path);
+        }
+
         public void CreateNewFile(string path)
         {
             xlsFile = xlsApp.Workbooks.Add(Excel.XlWBATemplate.xlWBATWorksheet);
             sheet = xlsFile.ActiveSheet;
-            xlsFile.SaveAs(path);
+            this.SaveAs(path);
         }
 
         public void Close()

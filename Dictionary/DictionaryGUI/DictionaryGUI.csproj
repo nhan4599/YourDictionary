@@ -67,6 +67,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="CsvFileManagement.cs" />
     <Compile Include="DatabaseManagement.cs" />
     <Compile Include="Data\DataModels.Context.cs">
       <AutoGen>True</AutoGen>

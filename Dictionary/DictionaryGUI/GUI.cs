@@ -4,6 +4,7 @@ using System.Linq;
 using DictionaryGUI.Data;
 using System.Data;
 using System.Collections.Generic;
+using System.IO;
 
 namespace DictionaryGUI
 {
@@ -31,8 +32,7 @@ namespace DictionaryGUI
                 FrmEdit_Add frm = new FrmEdit_Add(true);
                 if (frm.ShowDialog() == DialogResult.Yes)
                 {
-                    Word obj;
-                    frm.PerformAction(out obj);
+                    frm.PerformAction(out Word obj);
                     wordsTable.Rows.Add(obj.word_o, obj.Type.type_description, obj.word_m);
                     wordsTable.Sort(wordsTable.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
                     MessageBox.Show("Add successfully");
@@ -50,13 +50,38 @@ namespace DictionaryGUI
             if (frmOpen.ShowDialog() == DialogResult.OK)
             {
                 string path = frmOpen.FileName;
-                ExcelManagement exl = new ExcelManagement();
                 List<Word> list = GetSelectedWordsList();
-                exl.CreateNewFile(path);
-                exl.WriteFile(list);
-                exl.Close();
-                MessageBox.Show("Completed to export selected data to " + path);
+                if (File.Exists(path))
+                {
+                    MessageBox.Show("file has been existed, please choose another name");
+                    return;
+                }
+                this.Enabled = false;
+                if (frmOpen.FilterIndex == 0 || frmOpen.FilterIndex == 1)
+                {
+                    WriteToExcel(path, list);
+                }else
+                {
+                    WriteToCsvFile(path, list);
+                }
+                this.Enabled = true;
             }
+        }
+
+        private void WriteToCsvFile(string path, List<Word> list)
+        {
+            CsvFileManagement csv = new CsvFileManagement(path);
+            csv.Write(list);
+        }
+
+        private void WriteToExcel(string path, List<Word> list)
+        {
+            ExcelManagement exl = new ExcelManagement(path);
+            exl.ClearData();
+            exl.WriteFile(list);
+            exl.Save();
+            exl.Close();
+            MessageBox.Show("Completed to export selected data to " + path);
         }
 
         private List<Word> GetSelectedWordsList()
@@ -106,11 +131,11 @@ namespace DictionaryGUI
             FrmEdit_Add frm = new FrmEdit_Add(false, word, manager.GetIDOfType(type), mean);
             if (frm.ShowDialog() == DialogResult.Yes)
             {
-                Word obj;
-                frm.PerformAction(out obj);
+                frm.PerformAction(out Word obj);
                 wordsTable.Rows[e.RowIndex].Cells[2].Value = obj.word_m;
                 MessageBox.Show("Edit successfully");
             }
+            frm.Dispose();
         }
 
         private void RecmWordsList_MouseClick(object sender, MouseEventArgs e)
