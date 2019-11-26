@@ -62,7 +62,8 @@ namespace DictionaryGUI
             this.lbPath = new Label();
             this.btnDirect = new Button();
             this.btnImport = new Button();
-            this.frmOpen = new SaveFileDialog();
+            this.frmSave = new SaveFileDialog();
+            this.frmOpen = new OpenFileDialog();
 
             // SuspendLayout
             this.tabSeparator.SuspendLayout();
@@ -295,6 +296,7 @@ namespace DictionaryGUI
             this.txtPath.Location = new Point(95, 21);
             this.txtPath.Name = "txtPath";
             this.txtPath.Size = new Size(467, 22);
+            this.txtPath.ReadOnly = true;
             this.txtPath.TabIndex = 0;
 
             //
@@ -362,10 +364,18 @@ namespace DictionaryGUI
             this.btnDirect.UseVisualStyleBackColor = true;
 
             //
+            // frmSave
+            //
+            this.frmSave.InitialDirectory = @"C:\";
+            this.frmSave.Filter = "Excel 2003 and below (*.xls)|*.xls|Excel 2007 and greater than (*.xlsx)|*.xlsx|Comma separated values (*.csv)|*.csv";
+            this.frmSave.RestoreDirectory = true;
+
+            //
             // frmOpen
             //
             this.frmOpen.InitialDirectory = @"C:\";
-            this.frmOpen.Filter = "Excel 2003 and below (*.xls)|*.xls|Excel 2007 and greater than (*.xlsx)|*.xlsx|Comma separated values (*.csv)|*.csv";
+            this.frmOpen.Filter = frmSave.Filter;
+            this.frmOpen.RestoreDirectory = false;
 
             //
             // GUI
@@ -404,6 +414,7 @@ namespace DictionaryGUI
         private FlowLayoutPanel wordListPanel;
         private Label lbPath, lbTitle;
         private LinkLabel lbHelp;
-        private SaveFileDialog frmOpen;
+        private SaveFileDialog frmSave;
+        private OpenFileDialog frmOpen;
     }
 }

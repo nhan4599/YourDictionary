@@ -10,7 +10,7 @@ namespace DictionaryGUI
 {
     public partial class GUI : Form
     {
-        DatabaseManagement manager;
+        private readonly DatabaseManagement manager;
         public GUI()
         {
             InitializeComponent();
@@ -43,24 +43,58 @@ namespace DictionaryGUI
             this.btnSelect.Click += (sender, e) => SelectAllCheckBox(true);
             this.btnDeSelect.Click += (sender, e) => SelectAllCheckBox(false);
             this.btnExport.Click += BtnExport_Click;
+            this.btnDirect.Click += BtnDirect_Click;
+            this.btnImport.Click += BtnImport_Click;
+        }
+
+        private void BtnImport_Click(object sender, EventArgs e)
+        {
+            if (txtPath.Text.Length == 0)
+            {
+                MessageBox.Show("You haven't ever choose a file, please choose a file");
+                return;
+            }
+            this.Enabled = false;
+            string path = txtPath.Text;
+            ImportManagement importer = new ImportManagement(path);
+            List<Word> objs = importer.ImportTo(manager);
+            for (int i = 0; i < objs.Count; i++)
+            {
+                this.wordsTable.Rows.Add(objs[i].word_o, manager.GetTypeOfId(objs[i].type_id).type_description, objs[i].word_m);
+            }
+            this.Enabled = true;
+            this.wordsTable.Sort(this.wordsTable.Columns[0], System.ComponentModel.ListSortDirection.Ascending);
+            MessageBox.Show("Imported successfully");
+        }
+
+        private void BtnDirect_Click(object sender, EventArgs e)
+        {
+            if (frmOpen.ShowDialog() == DialogResult.OK)
+            {
+                txtPath.Text = frmOpen.FileName;
+            }
         }
 
         private void BtnExport_Click(object sender, EventArgs e)
         {
-            if (frmOpen.ShowDialog() == DialogResult.OK)
+            if (frmSave.ShowDialog() == DialogResult.OK)
             {
-                string path = frmOpen.FileName;
+                string path = frmSave.FileName;
                 List<Word> list = GetSelectedWordsList();
                 if (File.Exists(path))
                 {
-                    MessageBox.Show("file has been existed, please choose another name");
+                    MessageBox.Show("file has been existed, please choose another name",
+                                    "Error",
+                                    MessageBoxButtons.OKCancel,
+                                    MessageBoxIcon.Error);
                     return;
                 }
                 this.Enabled = false;
-                if (frmOpen.FilterIndex == 0 || frmOpen.FilterIndex == 1)
+                if (frmSave.FilterIndex == 0 || frmSave.FilterIndex == 1)
                 {
                     WriteToExcel(path, list);
-                }else
+                }
+                else
                 {
                     WriteToCsvFile(path, list);
                 }
@@ -71,7 +105,7 @@ namespace DictionaryGUI
         private void WriteToCsvFile(string path, List<Word> list)
         {
             CsvFileManagement csv = new CsvFileManagement(path);
-            csv.Write(list);
+            csv.WriteFile(list);
         }
 
         private void WriteToExcel(string path, List<Word> list)
@@ -114,12 +148,18 @@ namespace DictionaryGUI
 
         private void BtnDelete_Click(object sender, EventArgs e)
         {
-            string word = wordsTable.SelectedRows[0].Cells[0].Value.ToString();
-            string type = wordsTable.SelectedRows[0].Cells[1].Value.ToString();
-            int id = manager.GetIDOfType(type);
-            manager.RemoveWord(word, id);
-            wordsTable.Rows.RemoveAt(wordsTable.SelectedRows[0].Index);
-            MessageBox.Show("removed successfully");
+            DialogResult result = MessageBox.Show("Do you want to delete selected word?",
+                                                "Confirm",
+                                                MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+            if (result == DialogResult.Yes)
+            {
+                string word = wordsTable.SelectedRows[0].Cells[0].Value.ToString();
+                string type = wordsTable.SelectedRows[0].Cells[1].Value.ToString();
+                int id = manager.GetIDOfType(type);
+                manager.RemoveWord(word, id);
+                wordsTable.Rows.RemoveAt(wordsTable.SelectedRows[0].Index);
+                MessageBox.Show("removed successfully");
+            }
         }
 
         private void WordsTable_CellDoubleClick(object sender, DataGridViewCellEventArgs e)

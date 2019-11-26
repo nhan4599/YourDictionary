@@ -2,15 +2,16 @@
 using System.Collections.Generic;
 using DictionaryGUI.Data;
 using System.IO;
+using System;
 
 namespace DictionaryGUI
 {
     class ExcelManagement
     {
         private readonly string path;
-        Excel._Application xlsApp;
-        Excel.Workbook xlsFile;
-        Excel.Worksheet sheet;
+        private readonly Excel._Application xlsApp;
+        private Excel.Workbook xlsFile;
+        private Excel.Worksheet sheet;
 
         public ExcelManagement(string path)
         {
@@ -24,6 +25,26 @@ namespace DictionaryGUI
                 xlsFile = xlsApp.Workbooks.Open(path);
             }
             sheet = xlsFile.Sheets[1];
+        }
+
+        public List<Word> ReadFile()
+        {
+            List<Word> list = new List<Word>();
+            if (sheet.UsedRange.Columns.Count != 3)
+            {
+                throw new Exception("This file does not match");
+            }else
+            {
+                for (int i = 1; i <= sheet.UsedRange.Rows.Count; i++)
+                {
+                    Word obj = new Word();
+                    obj.word_o = sheet.Cells[i, 1].Value2.ToString();
+                    obj.type_id = int.Parse(sheet.Cells[i, 2].Value2.ToString());
+                    obj.word_m = sheet.Cells[i, 3].Value2.ToString();
+                    list.Add(obj);
+                }
+            }
+            return list;
         }
 
         public void WriteFile(List<Word> t)

@@ -6,7 +6,7 @@ namespace DictionaryGUI
 {
     class DatabaseManagement
     {
-        DictionaryEntities db;
+        private readonly DictionaryEntities db;
 
         public DatabaseManagement()
         {
